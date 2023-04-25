@@ -24,5 +24,6 @@ public class SungjukController {
         // sungjuklist.jsp에 성적조회결과를 sjs라는 이름으로 넘김
         model.addAttribute("sjs", sjsrv.readSungJuk());
         return "sungjuklist";
+
     }
 }

@@ -95,10 +95,16 @@ public class SungjukController {
 
     // 성적 입력 처리
     @PostMapping("/modify")
-    public String modifyok() {
+    public ModelAndView modifyok(SungJukVO sj) {
 
+        String view = "sungjukfail";
+        ModelAndView mv = new ModelAndView();
+        if(sjsrv.modifySungJuk(sj)){
+            view = "redirect:/view?sjno=" + sj.getSjno();
+        }
+        mv.setViewName(view);
 
-        return "";
+        return mv;
     }
 
 

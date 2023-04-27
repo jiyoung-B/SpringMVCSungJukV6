@@ -2,6 +2,9 @@ package catgirl.spring4.sungjukv6.controller;
 
 import catgirl.spring4.sungjukv6.model.SungJukVO;
 import catgirl.spring4.sungjukv6.service.SungJukV6Service;
+import catgirl.spring4.sungjukv6.service.SungJukV6ServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class SungjukController {
+    private static final Logger logger = LogManager.getLogger(SungJukV6ServiceImpl.class);
     private SungJukV6Service sjsrv;
     @Autowired
     public SungjukController(SungJukV6Service sjsrv) {
@@ -40,6 +44,9 @@ public class SungjukController {
 
         String view = "sungjukfail";
         if (sjsrv.newSungJuk(sj)){
+            logger.info("addok성적"+sj);
+            logger.info("addok리저트"+sjsrv.newSungJuk(sj));
+
             mv.addObject("sj", sj);
             view = "sungjukok";
         }
@@ -64,5 +71,35 @@ public class SungjukController {
         return mv;
 
     }
+
+    // 성적 삭제
+    @GetMapping("/remove")
+    public String remove(int sjno) {
+        sjsrv.removeSungJuk(sjno);
+
+        // 클라이언트에게 /list를 서버에 요청하도록 지시
+        return "redirect:/list";
+
+    }
+
+    // 성적 입력폼 표시
+    @GetMapping("/modify")
+    public ModelAndView modify(@RequestParam int sjno) {
+        ModelAndView mv = new ModelAndView();
+
+        mv.addObject("sj", sjsrv.readOneSungJuk(sjno));
+        mv.setViewName("sjmodify");
+
+        return mv;
+    }
+
+    // 성적 입력 처리
+    @PostMapping("/modify")
+    public String modifyok() {
+
+
+        return "";
+    }
+
 
 }

@@ -28,8 +28,15 @@ public class SungJukV6ServiceImpl implements SungJukV6Service {
     public SungJukVO readOneSungJuk(int sjno) {
         return sjdao.selectOneSungJuk(sjno);
     }
-    public boolean modifySungJuk(SungJukVO sj) {return false;}
-    public boolean removeSungJuk(int sjno) {return false;}
+    public boolean modifySungJuk(SungJukVO sj) {
+        boolean result = false;
+        if(sjdao.updateSungJuk(sj) > 0) result = true;
+        return result;
+    }
+    public boolean removeSungJuk(int sjno) {
+        sjdao.deleteSungJuk(sjno);
+        return true;
+    }
 
     // 성적리스트 받아옴
     public List<SungJukVO> readSungJuk() {

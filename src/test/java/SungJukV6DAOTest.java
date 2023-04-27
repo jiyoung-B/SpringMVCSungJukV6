@@ -54,7 +54,22 @@ public class SungJukV6DAOTest extends TestCase {
         //System.out.println(sjdao.selectSungJuk());
         assertEquals(1, cnt);
 
+    }
 
+    @Test
+    public void test4() {
+        System.out.println(">> Test 4 시작 <<");
+        SungJukVO sj = new SungJukVO("이름", 11, 22, 33);
+        sj.setSjno(24);
+        sj.setTot(0);
+        sj.setAvg(0.0);
+        sj.setGrd('ㅋ');
+
+        assertEquals(1, sjdao.updateSungJuk(sj));
+
+        int sjno = 24;
+        System.out.println(sjdao.selectOneSungJuk(sjno));
+        System.out.println(sjdao.selectSungJuk());
 
     }
 

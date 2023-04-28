@@ -21,12 +21,12 @@ public class SungJukV6DAOImpl implements SungJukV4DAO{
     private static final Logger logger = LogManager.getLogger(SungJukV6DAOImpl.class);
     // debug, info(!), warn, error(!), fatal
 
-    // jdbc.properties 에 정의한 SQL 가져오기
-    @Value("#{jdbc['insertSQL']}") private String insertSQL;
-    @Value("#{jdbc['selectSQL']}") private String selectSQL;
-    @Value("#{jdbc['selectOneSQL']}") private String selectOneSQL;
-    @Value("#{jdbc['updateSQL']}") private String updateSQL;
-    @Value("#{jdbc['deleteSQL']}") private String deleteSQL;
+    // sql.properties 에 정의한 SQL 가져오기
+    @Value("#{sql['insertSQL']}") private String insertSQL;
+    @Value("#{sql['selectSQL']}") private String selectSQL;
+    @Value("#{sql['selectOneSQL']}") private String selectOneSQL;
+    @Value("#{sql['updateSQL']}") private String updateSQL;
+    @Value("#{sql['deleteSQL']}") private String deleteSQL;
 
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -41,7 +41,13 @@ public class SungJukV6DAOImpl implements SungJukV4DAO{
         try {
             // 매개변수 정의
             Object[] params = new Object[]{
-                    sj.getName(), sj.getKor(), sj.getEng(), sj.getMat(), sj.getTot(), sj.getAvg(), sj.getGrd()
+                    sj.getName(),
+                    sj.getKor(),
+                    sj.getEng(),
+                    sj.getMat(),
+                    sj.getTot(),
+                    sj.getAvg(),
+                    sj.getGrd()+""
             };
             cnt = jdbcTemplate.update(insertSQL, params);
         } catch (Exception ex) {
@@ -97,17 +103,23 @@ public class SungJukV6DAOImpl implements SungJukV4DAO{
 
     @Override
     public int updateSungJuk(SungJukVO sj) {
-        int cnt = -1;
+        Object[] param = new Object[]{
+                sj.getKor(),
+                sj.getEng(),
+                sj.getMat(),
+                sj.getTot(),
+                sj.getAvg(),
+                sj.getGrd() + "", sj.getSjno()
+        };
 
-        return cnt;}
+        return jdbcTemplate.update(updateSQL, param);
+    }
 
     @Override
     public int deleteSungJuk(int sjno) {
 
-        int cnt = -1;
-
-
-        return cnt;
+        Object[] param = new Object[]{sjno};
+        return jdbcTemplate.update(deleteSQL, param);
     }
 
 
